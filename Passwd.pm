@@ -12,7 +12,7 @@ require Exporter;
 @EXPORT = qw(
 	
 );
-$VERSION = '1.1';
+$VERSION = '1.3';
 
 
 # Preloaded methods go here.
@@ -38,7 +38,8 @@ sub file {
   while (<E>) {
     my %user;
 
-    @user{@field} = split ':';
+    @user{@field} = split ':' ;
+    chomp $user{home_dir}  ;
     push @user, \%user;
   }
 
