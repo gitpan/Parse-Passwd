@@ -3,3 +3,4 @@ MANIFEST
 Makefile.PL
 Passwd.pm
 test.pl
+script/passwd2jdb.pl
