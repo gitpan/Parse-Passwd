@@ -12,10 +12,18 @@ require Exporter;
 @EXPORT = qw(
 	
 );
-$VERSION = '1.0';
+$VERSION = '1.1';
 
 
 # Preloaded methods go here.
+my @field = 
+  qw(username password uid gid gcos_field fullname home_dir login_shell);
+
+sub fields {
+  
+  @field;
+
+}
 
 sub file {
 
@@ -29,8 +37,7 @@ sub file {
 
   while (<E>) {
     my %user;
-    my @field = 
-      qw(username, password, uid gid gcos_field fullname home_dir login_shell);
+
     @user{@field} = split ':';
     push @user, \%user;
   }
@@ -52,8 +59,22 @@ Parse::Passwd - parse Unix passwd files
 
   use Parse::Passwd;
 
+  ## example 1
+  print join ',', Parse::Passwd->fields;
+
+  ## example 2
   my $p = Parse::Passwd->file;
 
+  open P, ">passwd.jdb" or die $!;
+
+  for (@$p) {
+    print join ' -- ', @{$_}{Parse::Passwd->fields} ;
+    print "\n";
+  }
+
+
+  ## example 3
+  my $p = Parse::Passwd->file;
   use Data::Dumper; print Dumper($p);
 
   # OUTPUT
@@ -100,7 +121,12 @@ This is a lightweight alternative to Unix::PasswdFile.
 =head2 ->file ( [ $file ] )
 
 The class method file optionally takes one file argument to change the
-location of the C<passwd> file.
+location of the C<passwd> file. It returns a *reference* to an array of
+hash references.
+
+=head2 ->fields
+
+Returns an array giving the field names of a passwd file in order.
 
 =head1 AUTHOR
 
